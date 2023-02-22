@@ -1,3 +1,2 @@
 # Zaidimai
-
-#Mano kodas NMA informatikos projektui
+Mano kodas NMA informatikos projektui
