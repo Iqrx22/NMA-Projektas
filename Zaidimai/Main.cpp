@@ -16,7 +16,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Creating a window which name is FlappyBird
-	GLFWwindow* window = glfwCreateWindow(WINDOW_LENGTH, WINDOW_HEIGHT, "FlappyBird", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WINDOW_LENGTH, WINDOW_HEIGHT, "Flappy Bird", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Nesukure window" << std::endl;
 		glfwTerminate();
@@ -33,6 +33,15 @@ int main() {
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
+		
+		//clock
+		
+		//load images
+		
+		//time since last click += 1;
+		
+		//kiekviena cikla nuotrauku.x -= 1
+		//
 	}
 
 	glfwDestroyWindow(window);
