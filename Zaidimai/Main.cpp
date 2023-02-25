@@ -17,7 +17,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
 "}\n\0";
 
-
+const int WINDOW_LENGTH = 800, WINDOW_HEIGHT = 800;
 
 int main() {
 	// Initialize GLFW
@@ -32,7 +32,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(800, 800, "YoutubeOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WINDOW_LENGTH, WINDOW_HEIGHT, "Flappy Bird", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL){
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -46,7 +46,7 @@ int main() {
 	gladLoadGL();
 	// Specify the viewport of OpenGL in the Window
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, WINDOW_LENGTH, WINDOW_HEIGHT);
 
 
 	// Create Vertex Shader Object and get its reference
