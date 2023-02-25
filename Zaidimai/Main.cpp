@@ -19,8 +19,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 
 
-int main()
-{
+int main() {
 	// Initialize GLFW
 	glfwInit();
 
@@ -35,8 +34,7 @@ int main()
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
 	GLFWwindow* window = glfwCreateWindow(800, 800, "YoutubeOpenGL", NULL, NULL);
 	// Error check if the window fails to create
-	if (window == NULL)
-	{
+	if (window == NULL){
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
@@ -51,7 +49,6 @@ int main()
 	glViewport(0, 0, 800, 800);
 
 
-
 	// Create Vertex Shader Object and get its reference
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	// Attach Vertex Shader source to the Vertex Shader Object
@@ -63,7 +60,7 @@ int main()
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	// Attach Fragment Shader source to the Fragment Shader Object
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	// Compile the Vertex Shader into machine code
+	// Compile the Fragment Shader into machine code
 	glCompileShader(fragmentShader);
 
 	// Create Shader Program Object and get its reference
@@ -81,8 +78,7 @@ int main()
 
 
 	// Vertices coordinates
-	GLfloat vertices[] =
-	{
+	GLfloat vertices[] = {
 		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
 		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
 		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
@@ -92,8 +88,7 @@ int main()
 	};
 
 	// Indices for vertices order
-	GLuint indices[] =
-	{
+	GLuint indices[] = {
 		0, 3, 5, // Lower left triangle
 		3, 2, 4, // Lower right triangle
 		5, 4, 1 // Upper triangle
@@ -136,8 +131,7 @@ int main()
 
 
 	// Main while loop
-	while (!glfwWindowShouldClose(window))
-	{
+	while (!glfwWindowShouldClose(window)) {
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		// Clean the back buffer and assign the new color to it
