@@ -2,8 +2,6 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-#include<string>
-
 // Vertex Shader source code
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -21,10 +19,10 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 const int WINDOW_LENGTH = 800, WINDOW_HEIGHT = 800;
 
-
 int main() {
-	//Initialising GLFW
+	// Initialize GLFW
 	glfwInit();
+
 	// Tell GLFW what version of OpenGL we are using 
 	// In this case we are using OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -33,11 +31,11 @@ int main() {
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Create a GLFWwindow object of Window_height by window_length pixels, naming it "Flappy Bird!"
-	GLFWwindow* window = glfwCreateWindow(WINDOW_LENGTH, WINDOW_HEIGHT, "Flappy Bird!", NULL, NULL);
+	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
+	GLFWwindow* window = glfwCreateWindow(WINDOW_LENGTH, WINDOW_HEIGHT, "Flappy Bird", NULL, NULL);
 	// Error check if the window fails to create
-	if (window == NULL) {
-		std::cout << "Nesukure window" << std::endl;
+	if (window == NULL){
+		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -47,7 +45,7 @@ int main() {
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
 	// Specify the viewport of OpenGL in the Window
-	// In this case the viewport goes from x = 0, y = 0, to x = window_length, y = window_height
+	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, WINDOW_LENGTH, WINDOW_HEIGHT);
 
 
@@ -77,26 +75,29 @@ int main() {
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
+
+
 	// Vertices coordinates
 	GLfloat vertices[] = {
-		-0.5f, -0.5f * float(sqrt(3)) / 3,0.0f, //Lower left corner
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, //Lower right corner
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f //Upper corner
-		-0.5f / 2, 0.5f * float(sqrt(3)) / 6,0.0f, //Inner left
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, //Inner right
-		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f //Inner lower
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
+		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
+		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
+		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
 	};
 
+	// Indices for vertices order
 	GLuint indices[] = {
-		0, 3, 5, //Lower left triangle
-		3, 2, 4, //Upper triangle
-		5, 4, 1 //Lower right triangle
+		0, 3, 5, // Lower left triangle
+		3, 2, 4, // Lower right triangle
+		5, 4, 1 // Upper triangle
 	};
 
-	// Create reference containers for the Vartex Array Object and the Vertex Buffer Object
+	// Create reference containers for the Vartex Array Object, the Vertex Buffer Object, and the Element Buffer Object
 	GLuint VAO, VBO, EBO;
 
-	// Generate the VAO and VBO with only 1 object each
+	// Generate the VAO, VBO, and EBO with only 1 object each
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -106,11 +107,12 @@ int main() {
 
 	// Bind the VBO specifying it's a GL_ARRAY_BUFFER
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
 	// Introduce the vertices into the VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Bind the EBO specifying it's a GL_ELEMENT_ARRAY_BUFFER
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	// Introduce the indices into the EBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Configure the Vertex Attribute so that OpenGL knows how to read the VBO
@@ -121,7 +123,12 @@ int main() {
 	// Bind both the VBO and VAO to 0 so that we don't accidentally modify the VAO and VBO we created
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	// Bind the EBO to 0 so that we don't accidentally modify it
+	// MAKE SURE TO UNBIND IT AFTER UNBINDING THE VAO, as the EBO is linked in the VAO
+	// This does not apply to the VBO because the VBO is already linked to the VAO during glVertexAttribPointer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 
 	// Main while loop
 	while (!glfwWindowShouldClose(window)) {
@@ -133,24 +140,24 @@ int main() {
 		glUseProgram(shaderProgram);
 		// Bind the VAO so OpenGL knows to use it
 		glBindVertexArray(VAO);
-		// Draw the triangle using the GL_TRIANGLES primitive
+		// Draw primitives, number of indices, datatype of indices, index of indices
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
-
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
+
+
 
 	// Delete all the objects we've created
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 	glDeleteProgram(shaderProgram);
-
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
 	glfwTerminate();
-return 0;
+	return 0;
 }
